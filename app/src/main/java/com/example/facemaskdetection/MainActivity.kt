@@ -57,7 +57,6 @@ class MainActivity : ComponentActivity() {
 
         predictbtn.setOnClickListener {
 
-            // image processor
             var tensorImage = TensorImage(DataType.FLOAT32)
             tensorImage.load(bitmap)
 
@@ -69,43 +68,30 @@ class MainActivity : ComponentActivity() {
 
             val model = Maskdetection.newInstance(this)
 
-// Creates inputs for reference.
             val inputFeature0 = TensorBuffer.createFixedSize(intArrayOf(1, 128, 128, 3), DataType.FLOAT32)
             inputFeature0.loadBuffer(tensorImage.buffer)
 
-// Runs model inference and gets result.
             val outputs = model.process(inputFeature0)
             val outputFeature0 = outputs.outputFeature0AsTensorBuffer.floatArray
 
-//            var maxIdx = 0
-//            outputFeature0.forEachIndexed { index, fl ->
-//                if(outputFeature0[maxIdx] < fl){
-//                    maxIdx = index
-//                }
-//            }
-
-            // Ambil label berdasarkan nilai probabilitas
             val predictedLabel = getLabelFromProbability(outputFeature0[0])
 
-            // Tampilkan label di UI
             resView.text = predictedLabel
-//            resView.setText(labels[maxIdx])
 
             Log.d("Debug", "Output Feature: ${outputFeature0.contentToString()}")
 
 
-// Releases model resources if no longer used.
             model.close()
         }
     }
 
     private fun getLabelFromProbability(probability: Float): String {
-        val threshold = 0.5 // Sesuaikan ambang batas sesuai kebutuhan
+        val threshold = 0.5
 
         return if (probability > threshold) {
-            "Without Mask" // Jika probabilitas lebih besar dari ambang batas
+            "Without Mask"
         } else {
-            "With Mask" // Jika probabilitas kurang dari atau sama dengan ambang batas
+            "With Mask"
         }
     }
 
