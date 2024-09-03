@@ -17,7 +17,7 @@ The training process is run for 10 epochs and the model is regenerated with batc
 
 **RESULT**
 
-Results after training 18,000 images of cats and dogs:
+Results after training 9,433 images:
 * number of epochs = 10
 * training data / validation data split = 80/20
 * MODEL:
